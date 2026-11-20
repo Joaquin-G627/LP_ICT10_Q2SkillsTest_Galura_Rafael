@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2026.7.3/core.css">
+    <script type="module" src="https://pyscript.net/releases/2026.7.3/core.js"></script>
+    <title>Non-Metal Elements</title>
+    <style>
+        :root {
+            --cream: #f7f2e8;       /* Warm background color */
+            --paper: #fffdf8;       /* White-cream card color */
+            --orange: #d97745;      /* Main accent color */
+            --orange-dark: #b85a32; /* Hover and emphasis color */
+            --coral: #e99a70;       /* Left border color for the result */
+            --sage: #dbe4d1;        /* Light green background for instructions */
+            --text: #34312d;        /* Main dark text color */
+            --muted: #756f66;       /* Footer text color */
+            --line: #ddd5c6;        /* Border and divider color */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 42px 16px;
+            background: var(--cream);
+            color: var(--text);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .finder {
+            width: min(920px, 100%);
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid #c9bfad;
+            border-radius: 16px;
+            background: var(--paper);
+            box-shadow: 0 18px 50px rgba(75, 62, 43, 0.16);
+        }
+
+        header {
+            padding: 32px 36px 28px;
+            text-align: center;
+            color: #fffaf3;
+            background: var(--orange);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 48px;
+            line-height: 1;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 17px;
+            letter-spacing: 1px;
+        }
+
+        main {
+            padding: 32px 36px 24px;
+        }
+
+        .instructions {
+            margin-bottom: 24px;
+            padding: 17px 20px;
+            border: 1px solid #cfdabb;
+            border-left: 5px solid var(--orange);
+            border-radius: 8px;
+            background: var(--sage);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        .instructions strong {
+            display: block;
+            color: var(--orange-dark);
+            font-size: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            font: 17px Arial, Helvetica, sans-serif;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--orange);
+            outline: 3px solid rgba(217, 119, 69, 0.16);
+        }
+
+        input[type="button"] {
+            min-width: 180px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--orange);
+            color: white;
+            cursor: pointer;
+            font: bold 16px Arial, Helvetica, sans-serif;
+            transition: background 160ms ease, transform 160ms ease;
+        }
+
+        input[type="button"]:hover {
+            background: var(--orange-dark);
+            transform: translateY(-1px);
+        }
+
+        .result-heading {
+            margin: 24px 0 10px;
+            color: var(--orange-dark);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+        }
+
+        #result {
+            min-height: 132px;
+            padding: 18px 20px;
+            border-left: 5px solid var(--coral);
+            border-radius: 6px;
+            background: #faf7f0;
+            font-size: 18px;
+            line-height: 1.55;
+        }
+
+        footer {
+            margin: 22px -36px -24px;
+            padding: 17px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            text-align: center;
+            font: 14px Arial, Helvetica, sans-serif;
+        }
+
+        footer::before {
+            content: "";
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background: var(--orange);
+        }
+
+        @media (max-width: 620px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            header,
+            main {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .search-row {
+                grid-template-columns: 1fr;
+            }
+
+            input[type="button"] {
+                min-height: 48px;
+            }
+
+            footer {
+                margin-right: -20px;
+                margin-left: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="finder">
+        <header>
+            <h1>Non-Metal Elements</h1>
+            <p>Periodic Table Information Finder</p>
+        </header>
+
+        <main>
+            <div class="instructions">
+                <strong>Instructions:</strong>
+                Enter the name or symbol of a non-metal element
+                (Examples: H, O, Cl, Ne, Xe).
+            </div>
+
+            <label for="element">Element Name or Symbol</label>
+            <div class="search-row">
+                <input type="text" id="element" placeholder="e.g. Oxygen or O" autocomplete="off">
+                <input type="button" py-click="search_element" value="Check Details">
+            </div>
+
+            <h2 class="result-heading">Result</h2>
+            <div id="result" role="status" aria-live="polite">
+                Element details will appear here.
+            </div>
+
+            <footer>Skills Test - 2nd Quarter - Undiscovered</footer>
+        </main>
+    </div>
+
+    <py-script src="main.py"></py-script>
+</body>
+</html>
